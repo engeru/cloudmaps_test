@@ -10,7 +10,7 @@ block body
         li
           a(href="/logout") Выход
   .col-sm-3.text-center
-    img#avatar(src="/user/avatar/"+user.id, alt=name)
+    img#avatar(src="/avatar/"+user.id, alt=name)
     div.text-center
       a#select-avatar(href="#") Сменить аватар
   .col-sm-5
@@ -23,13 +23,12 @@ block body
         h4 Мои друзья
         #friends
       .panel-footer
-        button.btn.btn-default(type="button", data-toggle="modal", data-target="#newFriends") Найти новых друзей
+        button.btn.btn-default(type="button", data-toggle="modal", data-target="#newFriends", style="object-fit: contain;") Найти новых друзей
   .col-sm-4
     .panel.panel-default
       .panel-heading
         h1.panel-title Карта
       #map.panel-body(style="height: 300px")
-
   #newFriends.modal.fade(tabindex='-1', role='dialog', aria-labelledby='newFriendsLabel')
     .modal-dialog(role='document')
       .modal-content
@@ -43,7 +42,7 @@ block body
           button.btn.btn-default(type='button', data-dismiss='modal') Закрыть
 
 block styles
-  link(rel="stylesheet", href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css")
+  link(rel="stylesheet", href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css")    
 
 block scripts
   script(src="/plupload-2.1.8/plupload.full.min.js")
@@ -71,14 +70,14 @@ block scripts
 
       function get_requests(){
         $.ajax({
-          url: '/user/requests/'+my.id,
+          url: '/friends/requests/'+my.id,
           method: 'GET'
         }).done(function(response){
           $('#requests').html(response);
 
           $('#requests .accept').on('click', function(e){
             $.ajax({
-              url: '/user/requests',
+              url: '/friends/requests',
               method: 'PUT',
               data: {
                 id: $(e.target).data('id')
@@ -90,7 +89,7 @@ block scripts
 
           $('#requests .decline').on('click', function(e){
             $.ajax({
-              url: '/user/requests/'+$(e.target).data('id'),
+              url: '/friends/requests/'+$(e.target).data('id'),
               method: 'DELETE',
             }).done(function(response){
               get_requests();
@@ -123,7 +122,7 @@ block scripts
 
       $('#newFriends').on('show.bs.modal', function(e){
         $.ajax({
-          url: '/user/list',
+          url: '/friends/list',
           method: 'GET'
         }).done(function(response){
           
@@ -131,7 +130,7 @@ block scripts
           
           $(".request").on('click', function(e){
             $.ajax({
-              url: '/user/request',
+              url: '/friends/request',
               method: 'GET',
               data: {
                 id_requested: $(e.target).data('id')
@@ -152,7 +151,7 @@ block scripts
 
       var uploader = new plupload.Uploader({
           browse_button: 'select-avatar',
-          url: '/user/avatar',
+          url: '/avatar/' + my.id,
           multi_selection: false,
           filters: {
             mime_types : [
@@ -161,7 +160,7 @@ block scripts
             max_file_size: "2000kb",
           },
           resize:{
-            width: 200,
+            width: 200, 
             height: 200
           }
       });
@@ -184,7 +183,7 @@ block scripts
         }
       });
       
-      io.socket.get('/user/subscribe', function(resData, jwres){
+      io.socket.get('/friends/subscribe', function(resData, jwres){
         return;
       });
 
