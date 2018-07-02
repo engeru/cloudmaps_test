@@ -36,6 +36,9 @@ module.exports.routes = {
     view: 'homepage'
   },
 
+  '/user/:username': 'UserController.profile', 
+
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

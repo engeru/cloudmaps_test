@@ -78,10 +78,18 @@ module.exports = {
         if(error){
           res.view('user/error',{message: 'При проверке логина и пароля произошла ошибка: ' + error.message});
         }
+        else if(!user){
+          res.view('user/error',{message: 'Ошибка: пользователь не существует'});
+        }
         else{
           if(user.password == crypto.createHash('sha256').update(req.param('password')).digest('hex')){
             req.session.user = user;
-            return res.redirect('/user/profile/'+user.id);
+            if(user.active){
+              return res.redirect('/user/'+user.username);
+            }
+            else{
+              res.view('user/activate'+user.login);
+            }
           }
           else{
             res.view('user/error',{message: 'Неверный логин или пароль'});
@@ -94,13 +102,15 @@ module.exports = {
         return res.view();
       }
       else{
-        return res.redirect('/user/profile/'+req.session.user.id);
+          return res.redirect('/user/' + req.session.user.username);
       }
     }
   },
 
   profile: function(req, res){
-    User.findOne(req.param('id')).exec(function(error, user){
+    User.findOne({
+      username: req.param('username')
+    }).exec(function(error, user){
       if(error){
         res.view('user/error',{message: 'Ошибка: ' + error.message});
       }
@@ -110,6 +120,11 @@ module.exports = {
         });
       }
     });
+  },
+
+  test: function(req, res){
+    
+    res.view('user/error',{message: 'hukhjh' + req.param('username')});
   },
 
   friends: function(req, res){
