@@ -10,7 +10,7 @@ block body
         li
           a(href="/logout") Выход
   .col-sm-3.text-center
-    img#avatar(src="/avatar/"+user.id, alt=name)
+    img#avatar(src="/user/avatar/" + user.id, alt=name)
     div.text-center
       a#select-avatar(href="#") Сменить аватар
   .col-sm-5
@@ -23,7 +23,7 @@ block body
         h4 Мои друзья
         #friends
       .panel-footer
-        button.btn.btn-default(type="button", data-toggle="modal", data-target="#newFriends", style="object-fit: contain;") Найти новых друзей
+        button.btn.btn-default(type="button", data-toggle="modal", data-target="#newFriends") Найти новых друзей
   .col-sm-4
     .panel.panel-default
       .panel-heading
@@ -101,7 +101,7 @@ block scripts
       
       function get_friends(){
         $.ajax({
-          url: '/user/friends/'+my.id,
+          url: '/friends/friends/'+my.id,
           method: 'GET'
         }).done(function(response){
 
@@ -109,7 +109,7 @@ block scripts
 
           $('.delete-friend').on('click', function(e){
             $.ajax({
-              url: '/user/friends/'+$(e.target).data('id'),
+              url: '/friends/friends/'+$(e.target).data('id'),
               method: 'DELETE'
             }).done();
           });
@@ -151,7 +151,7 @@ block scripts
 
       var uploader = new plupload.Uploader({
           browse_button: 'select-avatar',
-          url: '/avatar/' + my.id,
+          url: 'user/avatar' + my.id,
           multi_selection: false,
           filters: {
             mime_types : [

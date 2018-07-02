@@ -37,13 +37,7 @@ module.exports.routes = {
   },
 
   '/user/:username': 'UserController.profile',
-  '/user/:id/avatar': 'UserController.avatar',
-  '/friends/new': 'UserController.friends',
-  '/friends/list': 'UserController.list',
-  '/friends/request': 'UserController.request',
-  '/friends/subscribe': 'UserController.subscribe',
-  '/avatar/:id': 'UserController.avatar',
-  '/activate-page/:username': 'UserController.activatePage',
+  '/friends/new': 'FriendsController.friends',
 
   /***************************************************************************
   *                                                                          *
@@ -55,8 +49,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/login': {controller: 'UserController', action: 'login'},
-  '/logout': {controller: 'UserController', action: 'logout'},
-  '/register': {controller: 'UserController', action: 'register'},
+  '/login': {controller: 'AuthController', action: 'login'},
+  '/logout': {controller: 'AuthController', action: 'logout'},
+  '/register': {controller: 'AuthController', action: 'register'},
+  '/activate': {controller: 'AuthController', action: 'activate'},
 
 };
